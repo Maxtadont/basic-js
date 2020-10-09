@@ -36,6 +36,6 @@ module.exports = function transform(array) {
       }
     }
   }
-  console.log(res);
+  //console.log(res);
   return res;
 };
