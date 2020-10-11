@@ -1,6 +1,7 @@
 const CustomError = require("../extensions/custom-error");
 
 module.exports = function transform(array) {
+  throw new CustomError('Not implemented');
   const controls = [
     '--discard-next',
     '--discard-prev',
