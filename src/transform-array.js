@@ -1,42 +1,47 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function transform(array) {
-  throw new CustomError('Not implemented');
-  const controls = [
-    '--discard-next',
-    '--discard-prev',
-    '--double-next',
-    '--double-prev'
-  ]
-  
-  let res = [];
-  if (!array && array.length === 0 && !Array.isArray(array))
-    res = []
-  else {
-    for (let i = 0; i < array.length; i++){      
-      switch (array[i]) {
-        case controls[0]: 
-          if (i < array.length) 
-            i += 2; 
-          break;
-        case controls[1]:
-          if (i > 0)
-            res.pop();
-          break;
-        case controls[2]:
-          if (i < array.length-1)
-            res.push(array[i+1]);
-          break;
-        case controls[3]:
-          if (i > 0)
-            res.push(array[i-1]);
-          break;
-        default: 
-            res.push(array[i]);
-          break;
-      }
+module.exports = function transform(array = []) {
+  const controls = ['--discard-next', '--discard-prev', '--double-next', '--double-prev'];
+ 
+  let res = []; let j = 0;
+  for (let i = 0; i < array.length; i++) {
+    switch (array[i]) {
+      case controls[0]:
+        if (i < (array.length-1)) {
+          res.push(" ");
+          i++;
+          j++;
+        }
+        break;
+
+      case controls[1]:
+        if (res.length > 0) {
+          res.pop();
+          j--;
+        }
+        break;
+
+      case controls[2]:
+        if (array[i+1] != undefined) {
+          res.push(array[i+1]);
+          j++;
+        }
+        break;
+      
+      case controls[3]:
+        if (res.length > 0)
+        if (res[j-1] !== " ") {
+          res.push(res[j-1]);
+          j++;
+        }
+        break;
+
+      default:
+        res.push(array[i]);
+        j++;
+        break;
     }
   }
-  //console.log(res);
+  res = res.filter(a => a !== " ");
   return res;
 };
